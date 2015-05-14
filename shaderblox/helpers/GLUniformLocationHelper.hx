@@ -1,7 +1,7 @@
 package shaderblox.helpers;
 
 #if snow
-import snow.render.opengl.GL;
+import snow.modules.opengl.GL;
 #elseif lime
 import lime.graphics.opengl.GLUniformLocation;
 #end

@@ -1,7 +1,6 @@
 package shaderblox.uniforms;
 #if snow
-import snow.render.opengl.GL;
-import falconer.utils.Vector3D;
+import snow.modules.opengl.GL;
 #elseif lime
 import lime.graphics.opengl.GL;
 import lime.math.Vector4;
@@ -9,6 +8,19 @@ import lime.graphics.opengl.GLUniformLocation;
 #end
 
 using shaderblox.helpers.GLUniformLocationHelper;
+
+class Vector4{
+	public var x:Float;
+	public var y:Float;
+	public var z:Float;
+	public var w:Float;
+	public function new(x:Float, y:Float, z:Float, w:Float){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+}
 
 /**
  * Vector4 float uniform

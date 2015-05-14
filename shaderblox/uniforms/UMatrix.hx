@@ -2,7 +2,7 @@ package shaderblox.uniforms;
 #if snow
 import snow.utils.Float32Array;
 import falconer.utils.Matrix3D;
-import snow.render.opengl.GL;
+import snow.modules.opengl.GL;
 #elseif lime
 import lime.graphics.opengl.GL;
 import lime.utils.Matrix3D;

@@ -4,7 +4,7 @@ import lime.utils.Matrix3D;
 import lime.graphics.opengl.GL;
 #elseif snow
 import falconer.utils.Matrix3D;
-import snow.render.opengl.GL;
+import snow.modules.opengl.GL;
 import lime.graphics.opengl.GLUniformLocation;
 #end
 

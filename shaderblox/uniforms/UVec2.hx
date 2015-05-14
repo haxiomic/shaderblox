@@ -3,7 +3,7 @@ package shaderblox.uniforms;
 using shaderblox.helpers.GLUniformLocationHelper;
 
 #if snow
-import snow.render.opengl.GL;
+import snow.modules.opengl.GL;
 class Vector2{
 	public var x:Float;
 	public var y:Float;
