@@ -17,7 +17,12 @@ class Vector3{
 	public var x:Float;
 	public var y:Float;
 	public var z:Float;
-	public function new(x:Float, y:Float, z:Float){
+	public function new(x:Float = 0, y:Float = 0, z:Float = 0){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	inline public function set(x:Float, y:Float, z:Float){
 		this.x = x;
 		this.y = y;
 		this.z = z;
