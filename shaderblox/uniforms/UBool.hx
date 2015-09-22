@@ -12,6 +12,7 @@ using shaderblox.helpers.GLUniformLocationHelper;
  * Bool uniform
  * @author Andreas Rønning
  */
+@:keepSub
 class UBool extends UniformBase<Bool> implements IAppliable  {
 	public function new(name:String, index:GLUniformLocation, f:Bool = false) {
 		super(name, index, f);

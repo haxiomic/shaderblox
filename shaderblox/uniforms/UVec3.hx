@@ -17,7 +17,7 @@ class Vector3{
 	public var x:Float;
 	public var y:Float;
 	public var z:Float;
-	public function new(x:Float = 0, y:Float = 0, z:Float = 0){
+	inline public function new(x:Float = 0, y:Float = 0, z:Float = 0){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -29,6 +29,7 @@ class Vector3{
 	}
 }
 
+@:keepSub
 class UVec3 extends UniformBase<Vector3> implements IAppliable {
 	public function new(name:String, index:GLUniformLocation, x:Float = 0, y:Float = 0, z:Float = 0) {
 		super(name, index, new Vector3(x, y, z));

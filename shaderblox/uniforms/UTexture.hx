@@ -13,6 +13,8 @@ using shaderblox.helpers.GLUniformLocationHelper;
  * GLTexture uniform
  * @author Andreas Rønning
  */
+
+@:keepSub
 class UTexture extends UniformBase<GLTexture> implements IAppliable  {
 	public var samplerIndex:Int;
 	static var lastActiveTexture:Int = -1;

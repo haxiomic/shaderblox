@@ -2,6 +2,7 @@ package shaderblox.macro;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Expr.Field;
+import haxe.macro.Expr.TypePath;
 import haxe.macro.Type.ClassType;
 import haxe.rtti.Meta;
 
@@ -356,36 +357,59 @@ class ShaderBuilder
 								case EBlock(exprs):
 									//Populate our variables
 									//Create an array of uniforms
-									
+										
+									//uniforms
 									for (uni in uniformFields) {
-										var name:String = uni.fieldName;
-										if (uni.typeName.split(".").pop() == "UTexture"){
+										var fieldName:String = uni.fieldName;
+
+										var typePathArray = uni.typeName.split(".");
+										var typeName = typePathArray.pop();
+
+										var typePath:TypePath = {
+											name: typeName,
+											pack: typePathArray
+										}
+
+										if (typeName == "UTexture"){
 											exprs.push(
 												macro {
-													var instance = Type.createInstance( Type.resolveClass( $v { uni.typeName } ), [$v { uni.fieldName }, $v { uni.index }, $v { uni.extrainfo } ]);
-													Reflect.setField(this, $v { name }, instance);
+													var instance = new $typePath($v{ uni.fieldName }, null, $v{ uni.extrainfo });
+													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
 											);
 										}else {
 											exprs.push(
 												macro {
-													var instance = Type.createInstance( Type.resolveClass( $v { uni.typeName } ), [$v { uni.fieldName}, $v { uni.index } ]);
-													Reflect.setField(this, $v { name }, instance);
+													var instance = new $typePath($v{ uni.fieldName }, null);
+													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
 											);
 										}
 									}
+
+									//attributes
 									var stride:Int = 0;
 									for (att in attributeFields) {
+										var fieldName:String = att.fieldName;
+
+										var typePathArray = att.typeName.split(".");
+										var typeName = typePathArray.pop();
+
+										var typePath:TypePath = {
+											name: typeName,
+											pack: typePathArray
+										}
+
 										var name:String = att.fieldName;
 										var numItems:Int = att.itemCount;
 										stride += numItems * 4;
 										exprs.push(
 											macro {
-												var instance = Type.createInstance( Type.resolveClass( $v { att.typeName } ), [$v { att.fieldName }, $v { att.index }, $v { numItems } ]);
-												Reflect.setField(this, $v { name }, instance);
+												var instance = new $typePath($v { att.fieldName }, $v { att.index }, $v { numItems });
+												//Type.createInstance( Type.resolveClass( $v { att.typeName } ), [$v { att.fieldName }, $v { att.index }, $v { numItems } ]);
+												this.$fieldName = instance;
 												_attributes.push(instance);
 											}
 										);

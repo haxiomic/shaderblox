@@ -17,6 +17,8 @@ using shaderblox.helpers.GLUniformLocationHelper;
  * Matrix3D uniform (not transposed)
  * @author Andreas Rønning
  */
+
+@:keepSub
 class UMatrix extends UniformBase<Matrix3D> implements IAppliable {
 	public function new(name:String, index:GLUniformLocation, ?m:Matrix3D) {
 		if (m == null) m = new Matrix3D();

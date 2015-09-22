@@ -14,7 +14,13 @@ class Vector4{
 	public var y:Float;
 	public var z:Float;
 	public var w:Float;
-	public function new(x:Float, y:Float, z:Float, w:Float){
+	inline public function new(x:Float = 0, y:Float = 0, z:Float = 0, w:Float = 0){
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+	inline public function set(x:Float, y:Float, z:Float, w:Float){
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -26,6 +32,8 @@ class Vector4{
  * Vector4 float uniform
  * @author Andreas Rønning
  */
+
+@:keepSub
 class UVec4 extends UniformBase<Vector4> implements IAppliable  {
 	public function new(name:String, index:GLUniformLocation, x:Float = 0, y:Float = 0, z:Float = 0, w:Float = 0) {
 		super(name, index, new Vector4(x, y, z, w));

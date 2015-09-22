@@ -10,7 +10,10 @@ import lime.graphics.opengl.GLUniformLocation;
  * Generic uniform type
  * @author Andreas Rønning
  */
-@:generic @:remove class UniformBase<T> {
+
+@:generic
+@:remove 
+class UniformBase<T> {
 	public var name:String;
 	public var location:GLUniformLocation;
 	public var data(default, set):T;

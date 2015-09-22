@@ -7,11 +7,11 @@ import snow.modules.opengl.GL;
 class Vector2{
 	public var x:Float;
 	public var y:Float;
-	public function new(x:Float = 0, y:Float = 0){
+	inline public function new(x:Float = 0, y:Float = 0){
 		this.x = x;
 		this.y = y;
 	}
-	public function set(x:Float, y:Float){
+	inline public function set(x:Float, y:Float){
 		this.x = x;
 		this.y = y;
 	}
@@ -27,6 +27,8 @@ import lime.math.Vector2;
  * Vector2 float uniform
  * @author Andreas Rønning
  */
+
+@:keepSub
 class UVec2 extends UniformBase<Vector2> implements IAppliable  {
 	public function new(name:String, index:GLUniformLocation, x:Float = 0, y:Float = 0) {
 		super(name, index, new Vector2(x, y));

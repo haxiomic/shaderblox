@@ -12,6 +12,8 @@ using shaderblox.helpers.GLUniformLocationHelper;
  * Float uniform
  * @author Andreas Rønning
  */
+ 
+@:keepSub
 class UFloat extends UniformBase<Float> implements IAppliable  {
 	public function new(name:String, index:GLUniformLocation, f:Float = 0.0) {
 		super(name, index, f);
