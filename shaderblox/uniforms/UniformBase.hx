@@ -24,7 +24,6 @@ class UniformBase<T> {
 		this.data = data;
 	}
 	public inline function set(data:T):T {
-		setDirty();
 		return this.data = data;
 	}
 	public inline function setDirty() {
