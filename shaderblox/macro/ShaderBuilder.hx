@@ -127,7 +127,11 @@ class ShaderBuilder
 		vertSource = "";
 		fragSource = "";
 
-		var defaultESPrecision = "\n#ifdef GL_ES\nprecision mediump float;\n#endif\n";
+		var defaultESPrecision = "
+#ifdef GL_ES
+precision highp float;
+precision highp sampler2D;
+#endif\n";
 		vertSource += defaultESPrecision;
 		fragSource += defaultESPrecision;
 
