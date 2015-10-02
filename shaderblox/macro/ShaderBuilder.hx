@@ -280,23 +280,24 @@ precision highp sampler2D;
 			doc: null,
 			meta: [],
 			access: [APublic],
-			kind: FProp("null","set",macro : Dynamic, null),
+			kind: FProp("default","set",macro : Dynamic, null),
 			pos: Context.currentPos()
 		}
 
 		//public var set_(CONSTANT) (value:Dynamic){ // sets constant value, calls update shader }
+		var constName = const.name;
 		var constSetterExpr:Expr;
 		switch(sourceKind){
 			case Vert:
 				constSetterExpr = macro {
-					Reflect.setField(this, $v{const.name}, value);
+					this.$constName = value;
 					this._vertSource = shaderblox.glsl.GLSLTools.injectConstValue(this._vertSource, $v{const.name}, value);
 					if(this._ready) this.destroy();
 					return value;
 				}
 			case Frag:
 				constSetterExpr = macro {
-					Reflect.setField(this, $v{const.name}, value);
+					this.$constName = value;
 					this._fragSource = shaderblox.glsl.GLSLTools.injectConstValue(this._fragSource, $v{const.name}, value);
 					if(this._ready) this.destroy();
 					return value;
@@ -412,7 +413,6 @@ precision highp sampler2D;
 										exprs.push(
 											macro {
 												var instance = new $typePath($v { att.fieldName }, $v { att.index }, $v { numItems });
-												//Type.createInstance( Type.resolveClass( $v { att.typeName } ), [$v { att.fieldName }, $v { att.index }, $v { numItems } ]);
 												this.$fieldName = instance;
 												_attributes.push(instance);
 											}

@@ -73,6 +73,7 @@ class GLSLTools {
                 //replace initializer in src
                 var srcBefore = src.substring(0, initializerRangeAbsolute.start);
                 var srcAfter = src.substring(initializerRangeAbsolute.end);
+
                 return srcBefore+value+srcAfter;
             }
             //next global declaration
