@@ -42,6 +42,7 @@ class ShaderBase
 
 	public function new() {
 		_name = ("" + Type.getClass(this)).split(".").pop();
+		_aStride = 0;
 		initSources();
 		createProperties();
 	}
