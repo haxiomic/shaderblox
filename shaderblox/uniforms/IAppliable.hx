@@ -1,11 +1,6 @@
 package shaderblox.uniforms;
 
-#if snow
-import snow.modules.opengl.GL;
-#elseif lime
-import lime.graphics.opengl.GLUniformLocation;
-#end
-
+import gluon.es2.GLUniformLocation;
 
 /**
  * All Uniforms are IAppliable.
@@ -15,7 +10,7 @@ import lime.graphics.opengl.GLUniformLocation;
 
 interface IAppliable 
 {
-	var location:GLUniformLocation;
-	var name:String;
-	function apply():Void;
+	var location: GLUniformLocation;
+	var name: String;
+	function apply(): Void;
 }

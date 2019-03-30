@@ -1,14 +1,9 @@
 package shaderblox.uniforms;
-#if snow
-import snow.modules.opengl.GL;
-#elseif lime
-import lime.graphics.opengl.GL;
-import lime.graphics.opengl.GLTexture;
-import lime.graphics.opengl.GLUniformLocation;
-#end
 
-using shaderblox.helpers.GLUniformLocationHelper;
-
+import gluon.es2.GLContext;
+import gluon.es2.GLContext.TextureTarget;
+import gluon.es2.GLUniformLocation;
+import gluon.es2.GLTexture;
 /**
  * GLTexture uniform
  * @author Andreas Rønning
@@ -19,20 +14,20 @@ class UTexture extends UniformBase<GLTexture> implements IAppliable  {
 	public var samplerIndex:Int;
 	static var lastActiveTexture:Int = -1;
 	var cube:Bool;
-	public var type:Int;
-	public function new(name:String, index:GLUniformLocation, cube:Bool = false) {
+	public var type: TextureTarget;
+	public function new(gl: GLContext, name:String, index:GLUniformLocation, cube:Bool = false) {
 		this.cube = cube;
-		type = cube?GL.TEXTURE_CUBE_MAP:GL.TEXTURE_2D;
-		super(name, index, null);
+		type = cube?TEXTURE_CUBE_MAP:TEXTURE_2D;
+		super(gl, name, index, null);
 	}
 	public inline function apply():Void {
 		if (data == null) return;
-		var idx = GL.TEXTURE0 + samplerIndex;
+		var idx = TEXTURE0 + samplerIndex;
 		if (lastActiveTexture != idx) {
-			GL.activeTexture(lastActiveTexture = idx);
+			gl.activeTexture(lastActiveTexture = idx);
 		}
-		GL.uniform1i(location, samplerIndex);
-		GL.bindTexture(type, data);
+		gl.uniform1i(location, samplerIndex);
+		gl.bindTexture(type, data);
 		dirty = false;
 	}
 }

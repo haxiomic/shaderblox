@@ -1,18 +1,14 @@
 package shaderblox;
-#if snow
-import snow.modules.opengl.GL;
-#elseif lime
-import lime.graphics.opengl.GL;
-import lime.graphics.opengl.GLProgram;
-import lime.graphics.opengl.GLShader;
-import lime.graphics.opengl.GLUniformLocation;
-#end
+
+import gluon.es2.GLContext;
+import gluon.es2.GLUniformLocation;
+import gluon.es2.GLShader;
+import gluon.es2.GLProgram;
 
 import shaderblox.attributes.Attribute;
 import shaderblox.uniforms.IAppliable;
 import shaderblox.uniforms.UTexture;
 
-using shaderblox.helpers.GLUniformLocationHelper;
 /**
  * Base shader type. Extend this to define new shader objects.
  * Subclasses of ShaderBase must define shader source metadata. 
@@ -23,6 +19,8 @@ using shaderblox.helpers.GLUniformLocationHelper;
 @:autoBuild(shaderblox.macro.ShaderBuilder.build()) 
 class ShaderBase
 {
+	var gl: GLContext;
+
 	//variables prepended with _ to avoid collisions with glsl variable names
 	var _uniforms:Array<IAppliable> = [];
 	var _attributes:Array<Attribute> = [];
@@ -40,7 +38,8 @@ class ShaderBase
 	public var _vertSource(default, null):String;
 	public var _fragSource(default, null):String;
 
-	public function new() {
+	public function new(gl: GLContext) {
+		this.gl = gl;
 		_name = ("" + Type.getClass(this)).split(".").pop();
 		initSources();
 		createProperties();
@@ -56,9 +55,9 @@ class ShaderBase
 	}
 	
 	public function destroy():Void {
-		GL.deleteShader(_vert);
-		GL.deleteShader(_frag);
-		GL.deleteProgram(_prog);
+		gl.deleteShader(_vert);
+		gl.deleteShader(_frag);
+		gl.deleteProgram(_prog);
 		_prog = null;
 		_vert = null;
 		_frag = null;
@@ -66,22 +65,22 @@ class ShaderBase
 	}
 	
 	function compile(vertSource:String, fragSource:String) {
-		var vertexShader = GL.createShader (GL.VERTEX_SHADER);
-		GL.shaderSource (vertexShader, vertSource);
-		GL.compileShader (vertexShader);
+		var vertexShader = gl.createShader (VERTEX_SHADER);
+		gl.shaderSource (vertexShader, vertSource);
+		gl.compileShader (vertexShader);
 
-		if (GL.getShaderParameter (vertexShader, GL.COMPILE_STATUS) == 0) {
-			trace("Error compiling vertex shader: " + GL.getShaderInfoLog(vertexShader));
+		if (!gl.getShaderParameter (vertexShader, COMPILE_STATUS)) {
+			trace("Error compiling vertex shader: " + gl.getShaderInfoLog(vertexShader));
 			trace("\n"+vertSource);
 			throw "Error compiling vertex shader";
 		}
 
-		var fragmentShader = GL.createShader (GL.FRAGMENT_SHADER);
-		GL.shaderSource (fragmentShader, fragSource);
-		GL.compileShader (fragmentShader);
+		var fragmentShader = gl.createShader (FRAGMENT_SHADER);
+		gl.shaderSource (fragmentShader, fragSource);
+		gl.compileShader (fragmentShader);
 		
-		if (GL.getShaderParameter (fragmentShader, GL.COMPILE_STATUS) == 0) {
-			trace("Error compiling fragment shader: " + GL.getShaderInfoLog(fragmentShader)+"\n");
+		if (!gl.getShaderParameter (fragmentShader, COMPILE_STATUS)) {
+			trace("Error compiling fragment shader: " + gl.getShaderInfoLog(fragmentShader)+"\n");
 			var lines = fragSource.split("\n");
 			var i = 0;
 			for (l in lines) {
@@ -90,28 +89,28 @@ class ShaderBase
 			throw "Error compiling fragment shader";
 		}
 		
-		var shaderProgram = GL.createProgram ();
+		var shaderProgram = gl.createProgram ();
 
-		GL.attachShader (shaderProgram, vertexShader);
-		GL.attachShader (shaderProgram, fragmentShader);
-		GL.linkProgram (shaderProgram);
+		gl.attachShader (shaderProgram, vertexShader);
+		gl.attachShader (shaderProgram, fragmentShader);
+		gl.linkProgram (shaderProgram);
 		
-		if (GL.getProgramParameter (shaderProgram, GL.LINK_STATUS) == 0) {
-			throw "Unable to initialize the shader program.\n"+GL.getProgramInfoLog(shaderProgram);
+		if (!gl.getProgramParameter (shaderProgram, LINK_STATUS)) {
+			throw "Unable to initialize the shader program.\n"+gl.getProgramInfoLog(shaderProgram);
 		}
 		
-		var numUniforms = GL.getProgramParameter(shaderProgram, GL.ACTIVE_UNIFORMS);
+		var numUniforms = gl.getProgramParameter(shaderProgram, ACTIVE_UNIFORMS);
 		var uniformLocations:Map<String,GLUniformLocation> = new Map<String, GLUniformLocation>();
 		while (numUniforms-->0) {
-			var uInfo = GL.getActiveUniform(shaderProgram, numUniforms);
-			var loc = GL.getUniformLocation(shaderProgram, uInfo.name);
+			var uInfo = gl.getActiveUniform(shaderProgram, numUniforms);
+			var loc = gl.getUniformLocation(shaderProgram, uInfo.name);
 			uniformLocations[uInfo.name] = loc;
 		}
-		var numAttributes = GL.getProgramParameter(shaderProgram, GL.ACTIVE_ATTRIBUTES);
+		var numAttributes = gl.getProgramParameter(shaderProgram, ACTIVE_ATTRIBUTES);
 		var attributeLocations:Map<String,Int> = new Map<String, Int>();
 		while (numAttributes-->0) {
-			var aInfo = GL.getActiveAttrib(shaderProgram, numAttributes);
-			var loc:Int = cast GL.getAttribLocation(shaderProgram, aInfo.name);
+			var aInfo = gl.getActiveAttrib(shaderProgram, numAttributes);
+			var loc:Int = cast gl.getAttribLocation(shaderProgram, aInfo.name);
 			attributeLocations[aInfo.name] = loc;
 		}
 		
@@ -131,7 +130,7 @@ class ShaderBase
 				t.samplerIndex = _numTextures++;
 				_textures[t.samplerIndex] = t;
 			}
-			if (loc.isValid()) {				
+			if (loc != null) {				
 				u.location = loc;
 				#if (debug && !display) trace("Defined uniform "+u.name+" at "+u.location); #end
 			}else {
@@ -166,7 +165,7 @@ class ShaderBase
 			return;
 		}
 		if (!_ready) create();
-		GL.useProgram(_prog);
+		gl.useProgram(_prog);
 		if (initUniforms) setUniforms();
 		if (initAttribs) setAttributes();
 		_active = true;
@@ -176,7 +175,7 @@ class ShaderBase
 		if (!_active) return;
 		_active = false;
 		disableAttributes();
-		// GL.useProgram(null);, seems to be fairly slow and we can get away without it
+		// gl.useProgram(null);, seems to be fairly slow and we can get away without it
 	}
 	
 	public inline function setUniforms() {
@@ -190,8 +189,8 @@ class ShaderBase
 			var att = _attributes[i];
 			var location = att.location;
 			if (location != -1) {
-				GL.enableVertexAttribArray(location);
-				GL.vertexAttribPointer (location, att.itemCount, att.type, false, _aStride, offset);
+				gl.enableVertexAttribArray(location);
+				gl.vertexAttribPointer (location, att.itemCount, att.type, false, _aStride, offset);
 			}
 			offset += att.byteSize;
 		}
@@ -200,7 +199,7 @@ class ShaderBase
 		for (i in 0..._attributes.length) {
 			var idx = _attributes[i].location;
 			if (idx == -1) continue;
-			GL.disableVertexAttribArray(idx);
+			gl.disableVertexAttribArray(idx);
 		}
 	}
 

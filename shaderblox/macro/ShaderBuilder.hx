@@ -378,7 +378,7 @@ precision highp sampler2D;
 										if (typeName == "UTexture"){
 											exprs.push(
 												macro {
-													var instance = new $typePath($v{ uni.fieldName }, null, $v{ uni.extrainfo });
+													var instance = new $typePath(gl, $v{ uni.fieldName }, null, $v{ uni.extrainfo });
 													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
@@ -386,7 +386,7 @@ precision highp sampler2D;
 										}else {
 											exprs.push(
 												macro {
-													var instance = new $typePath($v{ uni.fieldName }, null);
+													var instance = new $typePath(gl, $v{ uni.fieldName }, null);
 													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
@@ -442,7 +442,7 @@ precision highp sampler2D;
 			var l = lines[i];
 			if (l.indexOf("#pragma include") > -1) {
 				var info = l.substring(l.indexOf('"') + 1, l.lastIndexOf('"'));
-				lines[i] = pragmas(sys.io.File.getContent(info));
+				lines[i] = pragmas(sys.io.File.getContent(Context.resolvePath(info)));
 			}
 		}
 		return lines.join("\n");

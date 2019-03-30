@@ -1,10 +1,7 @@
 package shaderblox.uniforms;
 
-#if snow
-import snow.modules.opengl.GL;
-#elseif lime
-import lime.graphics.opengl.GLUniformLocation;
-#end
+import gluon.es2.GLContext;
+import gluon.es2.GLUniformLocation;
 
 /**
  * Generic uniform type
@@ -14,11 +11,13 @@ import lime.graphics.opengl.GLUniformLocation;
 @:generic
 @:remove 
 class UniformBase<T> {
+	var gl: GLContext;
 	public var name:String;
 	public var location:GLUniformLocation;
 	public var data(default, set):T;
 	public var dirty:Bool;
-	function new(name:String, index:GLUniformLocation, data:T) {
+	function new(gl: GLContext, name:String, index:GLUniformLocation, data:T) {
+		this.gl = gl;
 		this.name = name;
 		this.location = index;
 		this.data = data;

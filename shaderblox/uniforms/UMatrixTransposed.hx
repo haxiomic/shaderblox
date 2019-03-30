@@ -1,14 +1,7 @@
 package shaderblox.uniforms;
-#if lime
-import lime.utils.Matrix3D;
-import lime.graphics.opengl.GL;
-#elseif snow
-import falconer.utils.Matrix3D;
-import snow.modules.opengl.GL;
-import lime.graphics.opengl.GLUniformLocation;
-#end
 
-using shaderblox.helpers.GLUniformLocationHelper;
+import gluon.es2.GLContext;
+import gluon.es2.GLUniformLocation;
 
 /**
  * Transposed Matrix3D uniform
@@ -17,12 +10,12 @@ using shaderblox.helpers.GLUniformLocationHelper;
 
 @:keepSub
 class UMatrixTransposed extends UniformBase<Matrix3D> implements IAppliable {
-	public function new(index:GLUniformLocation, ?m:Matrix3D) {
+	public function new(gl: GLContext, index:GLUniformLocation, ?m:Matrix3D) {
 		if (m == null) m = new Matrix3D();
-		super(index, m);
+		super(gl, index, m);
 	}
 	public inline function apply():Void {
-		GL.uniformMatrix3D(location, true, data);
+		gl.uniformMatrix3D(location, true, data);
 		dirty = false;
 	}
 }
