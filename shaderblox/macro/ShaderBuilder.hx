@@ -1,4 +1,5 @@
 package shaderblox.macro;
+import haxe.macro.MacroStringTools;
 import haxe.io.Path;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -17,7 +18,7 @@ using Lambda;
  * ...
  * @author Andreas Rønning
  */
-private typedef FieldDef = {index:Null<Int>, typeName:String, fieldName:String, extrainfo:Dynamic };
+private typedef FieldDef = {index:Null<Int>, typeName:String, fieldName:String, extrainfo:Dynamic, uniform: GLSLGlobal };
 private typedef AttribDef = {index:Int, typeName:String, fieldName:String, itemCount:Int };
 private enum SourceKind{
 	Frag;
@@ -257,17 +258,22 @@ precision highp sampler2D;
 			default:
 				throw "Unknown uniform type: " + uniform.type;
 		}
+
+		if (uniform.arraySize != null && uniform.arraySize > 1) {
+			type.name += 'Array';
+		}
+
 		var f = {
-				name : uniform.name, 
-				doc : null, 
-				meta : [], 
-				access : [APublic], 
-				kind : FVar(TPath(type), null), 
-				pos : position 
-			};
+			name : uniform.name, 
+			doc : null, 
+			meta : [], 
+			access : [APublic], 
+			kind : FVar(TPath(type), null), 
+			pos : position 
+		};
 		fields.push(f);
 		uniformFields.push( 
-			{index:#if !js -1 #else null #end, fieldName: f.name, typeName:pack.join(".") + "." + type.name, extrainfo:extrainfo } 
+			{index:#if !js -1 #else null #end, fieldName: f.name, typeName:pack.join(".") + "." + type.name, extrainfo:extrainfo, uniform: uniform } 
 		);
 	}
 
@@ -338,14 +344,17 @@ precision highp sampler2D;
 		};
 		fields.push(createPropertiesFunc);
 
+		var vertSourceInterpolated = MacroStringTools.formatString(vertSource, Context.currentPos());
+		var fragSourceInterpolated = MacroStringTools.formatString(fragSource, Context.currentPos());
+
 		var initSourcesFunc = {
 			name : "initSources", 
 			doc : null, 
 			meta : [], 
 			access : [AOverride, APublic], 
 			kind : FFun( { args:[], params:[], ret:null, expr:macro {
-						this._vertSource = $v{vertSource};
-						this._fragSource = $v{fragSource};
+						this._vertSource = ${vertSourceInterpolated};
+						this._fragSource = ${fragSourceInterpolated};
 					}
 			} ),
 			pos : Context.currentPos() 
@@ -384,7 +393,15 @@ precision highp sampler2D;
 													_uniforms.push(instance);
 												}
 											);
-										}else {
+										} else if (uni.uniform.arraySize != null && uni.uniform.arraySize > 1) {
+											exprs.push(
+												macro {
+													var instance = new $typePath(gl, $v{ uni.fieldName }, null, $v{uni.uniform.arraySize});
+													this.$fieldName = instance;
+													_uniforms.push(instance);
+												}
+											);
+										} else {
 											exprs.push(
 												macro {
 													var instance = new $typePath(gl, $v{ uni.fieldName }, null);
@@ -455,7 +472,9 @@ precision highp sampler2D;
 					resolvedPath = Path.join([Path.directory(Context.getPosInfos(Context.currentPos()).file), info]);
 				}
 
-				lines[i] = pragmas(sys.io.File.getContent(Context.resolvePath(info)));
+				var content = sys.io.File.getContent(Context.resolvePath(info));
+
+				lines[i] = pragmas(content);
 			}
 		}
 		return lines.join("\n");

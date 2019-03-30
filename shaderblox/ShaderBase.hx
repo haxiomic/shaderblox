@@ -125,6 +125,9 @@ class ShaderBase
 		_textures = [];
 		for (u in _uniforms) {
 			var loc = uniformLocations.get(u.name);
+			if (loc == null) {
+				loc = uniformLocations.get(u.name + '[0]');
+			}
 			if (Std.is(u, UTexture)) {
 				var t:UTexture = cast u;
 				t.samplerIndex = _numTextures++;
@@ -139,7 +142,8 @@ class ShaderBase
 			}
 		}
 		while (removeList.length > 0) {
-			_uniforms.remove(removeList.pop());
+			var remove = removeList.pop();
+			_uniforms.remove(remove);
 		}
 		//TODO: Graceful handling of unused sampler uniforms.
 		/**

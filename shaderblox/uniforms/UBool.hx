@@ -8,7 +8,7 @@ import gluon.es2.GLUniformLocation;
  * @author Andreas Rønning
  */
 @:keepSub
-class UBool extends UniformBase<Bool> implements IAppliable  {
+class UBool extends UniformBase<Bool> implements IAppliable {
 	public function new(gl: GLContext, name:String, index:GLUniformLocation, f:Bool = false) {
 		super(gl, name, index, f);
 	}
