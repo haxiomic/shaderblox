@@ -1,4 +1,5 @@
 package shaderblox.macro;
+import haxe.io.Path;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Expr.Field;
@@ -442,6 +443,18 @@ precision highp sampler2D;
 			var l = lines[i];
 			if (l.indexOf("#pragma include") > -1) {
 				var info = l.substring(l.indexOf('"') + 1, l.lastIndexOf('"'));
+
+				// try resolved path first, then use file-relative resolution
+				var resolvedPath: Null<String> = null;
+				try {
+					resolvedPath = Context.resolvePath(info);
+				} catch (e: Any) { }
+			
+				// resolve relative to importing file
+				if (resolvedPath == null) {
+					resolvedPath = Path.join([Path.directory(Context.getPosInfos(Context.currentPos()).file), info]);
+				}
+
 				lines[i] = pragmas(sys.io.File.getContent(Context.resolvePath(info)));
 			}
 		}
