@@ -388,7 +388,7 @@ precision highp sampler2D;
 										if (typeName == "UTexture"){
 											exprs.push(
 												macro {
-													var instance = new $typePath(gl, $v{ uni.fieldName }, null, $v{ uni.extrainfo });
+													var instance = new $typePath(gl, $v{ uni.fieldName }, NONE, $v{ uni.extrainfo });
 													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
@@ -396,7 +396,7 @@ precision highp sampler2D;
 										} else if (uni.uniform.arraySize != null && uni.uniform.arraySize > 1) {
 											exprs.push(
 												macro {
-													var instance = new $typePath(gl, $v{ uni.fieldName }, null, $v{uni.uniform.arraySize});
+													var instance = new $typePath(gl, $v{ uni.fieldName }, NONE, $v{uni.uniform.arraySize});
 													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}
@@ -404,7 +404,7 @@ precision highp sampler2D;
 										} else {
 											exprs.push(
 												macro {
-													var instance = new $typePath(gl, $v{ uni.fieldName }, null);
+													var instance = new $typePath(gl, $v{ uni.fieldName }, NONE);
 													this.$fieldName = instance;
 													_uniforms.push(instance);
 												}

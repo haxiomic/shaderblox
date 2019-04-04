@@ -18,10 +18,10 @@ class UTexture extends UniformBase<GLTexture> implements IAppliable  {
 	public function new(gl: GLContext, name:String, index:GLUniformLocation, cube:Bool = false) {
 		this.cube = cube;
 		type = cube?TEXTURE_CUBE_MAP:TEXTURE_2D;
-		super(gl, name, index, null);
+		super(gl, name, index, NONE);
 	}
 	public inline function apply():Void {
-		if (data == null) return;
+		if (data == NONE) return;
 		var idx = TEXTURE0 + samplerIndex;
 		if (lastActiveTexture != idx) {
 			gl.activeTexture(lastActiveTexture = idx);
