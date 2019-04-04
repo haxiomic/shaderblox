@@ -58,9 +58,9 @@ class ShaderBase
 		gl.deleteShader(_vert);
 		gl.deleteShader(_frag);
 		gl.deleteProgram(_prog);
-		_prog = null;
-		_vert = null;
-		_frag = null;
+		_prog = NONE;
+		_vert = NONE;
+		_frag = NONE;
 		_ready = false;
 	}
 	
