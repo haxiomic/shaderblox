@@ -29,7 +29,7 @@ class UniformBase<T> {
 		dirty = true;
 	}
 	inline function set_data(data:T):T{
-		setDirty();		
+		setDirty();
 		return this.data = data;
 	}
 }

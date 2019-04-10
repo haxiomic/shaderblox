@@ -33,7 +33,7 @@ class ShaderBase
 	var _frag:GLShader;
 	var _ready:Bool;
 	var _numTextures:Int;
-	var _aStride:Int;
+	var _aStride:Int = 0;
 
 	public var _vertSource(default, null):String;
 	public var _fragSource(default, null):String;
@@ -184,7 +184,9 @@ class ShaderBase
 	
 	public inline function setUniforms() {
 		for (u in _uniforms) {
-			u.apply();
+			if (u.dirty) {
+				u.apply();
+			}
 		}
 	}
 	public inline function setAttributes() {
@@ -194,7 +196,7 @@ class ShaderBase
 			var location = att.location;
 			if (location != -1) {
 				gl.enableVertexAttribArray(location);
-				gl.vertexAttribPointer (location, att.itemCount, att.type, false, _aStride, offset);
+				gl.vertexAttribPointer(location, att.itemCount, att.type, false, _aStride, offset);
 			}
 			offset += att.byteSize;
 		}
