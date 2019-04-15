@@ -5,7 +5,7 @@ import gluon.es2.GLContext;
 import gluon.es2.GLUniformLocation;
 
 @:keepSub
-class UVec2Array extends UniformBase<Float32Array> implements IAppliable  {
+class UVec4Array extends UniformBase<Float32Array> implements IAppliable  {
 
 	var buffer: Float32Array;
 	var arraySize: Int;
@@ -14,14 +14,14 @@ class UVec2Array extends UniformBase<Float32Array> implements IAppliable  {
 		this.arraySize = arraySize;
 
 		if (a == null) {
-			buffer = new Float32Array(arraySize *  2);
+			buffer = new Float32Array(arraySize *  4);
 		}
 
 		super(gl, name, index, buffer);
 	}
 
 	public inline function apply():Void {
-		gl.uniform2fv(location, data);
+		gl.uniform4fv(location, data);
 		dirty = false;
 	}
 

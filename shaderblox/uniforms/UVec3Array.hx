@@ -4,11 +4,6 @@ import typedarray.Float32Array;
 import gluon.es2.GLContext;
 import gluon.es2.GLUniformLocation;
 
-/**
- * Vector2 float uniform
- * @author Andreas Rønning
- */
-
 @:keepSub
 class UVec3Array extends UniformBase<Float32Array> implements IAppliable  {
 
