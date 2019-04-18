@@ -24,6 +24,7 @@ class UTexture extends UniformBase<GLTexture> implements IAppliable  {
 	var gpuSideValue: Int = -1;
 	public inline function apply():Void {
 		if (data == NONE) return;
+
 		var idx = TEXTURE0 + samplerIndex;
 		if (lastActiveTexture != idx) {
 			gl.activeTexture(idx);
@@ -36,7 +37,5 @@ class UTexture extends UniformBase<GLTexture> implements IAppliable  {
 			gl.uniform1i(location, samplerIndex);
 			gpuSideValue = samplerIndex;
 		}
-
-		dirty = false;
 	}
 }
