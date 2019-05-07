@@ -11,6 +11,7 @@ import gluon.es2.GLUniformLocation;
 interface IAppliable 
 {
 	var dirty: Bool;
+	var alwaysDirty: Bool;
 	var location: GLUniformLocation;
 	var name: String;
 	function apply(): Void;

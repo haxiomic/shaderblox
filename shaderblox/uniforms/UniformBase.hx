@@ -16,6 +16,7 @@ class UniformBase<T> {
 	public var location:GLUniformLocation;
 	public var data(default, set):T;
 	public var dirty:Bool;
+	public var alwaysDirty: Bool = false;
 	function new(gl: GLContext, name:String, index:GLUniformLocation, data:T) {
 		this.gl = gl;
 		this.name = name;

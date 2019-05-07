@@ -184,7 +184,7 @@ class ShaderBase
 	
 	public inline function setUniforms() {
 		for (u in _uniforms) {
-			if (u.dirty) {
+			if (u.dirty || u.alwaysDirty) {
 				u.apply();
 			}
 		}
