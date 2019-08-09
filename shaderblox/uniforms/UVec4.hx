@@ -15,14 +15,14 @@ abstract Vec4(Float32Array) to Float32Array from Float32Array {
 		this = new Float32Array(4);
 		set_x(x);
 		set_y(y);
-		set_y(z);
+		set_z(z);
 		set_w(w);
 	}
 
 	inline public function set(x: Float, y: Float, z: Float, w: Float){
 		set_x(x);
 		set_y(y);
-		set_y(z);
+		set_z(z);
 		set_w(w);
 	}
 
