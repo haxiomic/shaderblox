@@ -1,9 +1,9 @@
 package shaderblox;
 
-import gluon.es2.GLContext;
-import gluon.es2.GLUniformLocation;
-import gluon.es2.GLShader;
-import gluon.es2.GLProgram;
+import gluon.webgl.GLContext;
+import gluon.webgl.GLUniformLocation;
+import gluon.webgl.GLShader;
+import gluon.webgl.GLProgram;
 
 import shaderblox.attributes.Attribute;
 import shaderblox.uniforms.IAppliable;
