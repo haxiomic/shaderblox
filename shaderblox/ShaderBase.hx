@@ -58,9 +58,9 @@ class ShaderBase
 		gl.deleteShader(_vert);
 		gl.deleteShader(_frag);
 		gl.deleteProgram(_prog);
-		_prog = NONE;
-		_vert = NONE;
-		_frag = NONE;
+		_prog = null;
+		_vert = null;
+		_frag = null;
 		_ready = false;
 	}
 	
@@ -103,14 +103,16 @@ class ShaderBase
 		var uniformLocations:Map<String,GLUniformLocation> = new Map<String, GLUniformLocation>();
 		while (numUniforms-->0) {
 			var uInfo = gl.getActiveUniform(shaderProgram, numUniforms);
-			var loc = gl.getUniformLocation(shaderProgram, uInfo.name);
+			var name: String = uInfo.name;
+			var loc = gl.getUniformLocation(shaderProgram, name);
 			uniformLocations[uInfo.name] = loc;
 		}
 		var numAttributes = gl.getProgramParameter(shaderProgram, ACTIVE_ATTRIBUTES);
 		var attributeLocations:Map<String,Int> = new Map<String, Int>();
 		while (numAttributes-->0) {
 			var aInfo = gl.getActiveAttrib(shaderProgram, numAttributes);
-			var loc:Int = cast gl.getAttribLocation(shaderProgram, aInfo.name);
+			var name: String = aInfo.name;
+			var loc:Int = cast gl.getAttribLocation(shaderProgram, name);
 			attributeLocations[aInfo.name] = loc;
 		}
 		
