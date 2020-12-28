@@ -1,8 +1,8 @@
 package shaderblox.uniforms;
 
 import typedarray.Float32Array;
-import gluon.webgl.GLContext;
-import gluon.webgl.GLUniformLocation;
+import webgl.GLContext;
+import webgl.GLUniformLocation;
 
 @:keepSub
 class UVec2Array extends UniformBase<Float32Array> implements IAppliable  {

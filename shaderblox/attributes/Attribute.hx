@@ -1,6 +1,6 @@
 package shaderblox.attributes;
 
-import gluon.webgl.GLContext.DataType;
+import webgl.GLContext.DataType;
 /**
  * Base attribute type with byte size, program location and attribute name
  * @author Andreas Rønning

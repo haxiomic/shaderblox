@@ -1,9 +1,9 @@
 package shaderblox.uniforms;
 
-import gluon.webgl.GLContext;
-import gluon.webgl.GLContext.TextureTarget;
-import gluon.webgl.GLUniformLocation;
-import gluon.webgl.GLTexture;
+import webgl.GLContext;
+import webgl.GLContext.TextureTarget;
+import webgl.GLUniformLocation;
+import webgl.GLTexture;
 /**
  * GLTexture uniform
  * @author Andreas Rønning

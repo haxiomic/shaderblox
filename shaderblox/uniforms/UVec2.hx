@@ -1,8 +1,8 @@
 package shaderblox.uniforms;
 
 import typedarray.Float32Array;
-import gluon.webgl.GLContext;
-import gluon.webgl.GLUniformLocation;
+import webgl.GLContext;
+import webgl.GLUniformLocation;
 
 abstract Vec2(Float32Array) to Float32Array from Float32Array {
 

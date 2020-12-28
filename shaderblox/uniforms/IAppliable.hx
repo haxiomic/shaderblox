@@ -1,6 +1,6 @@
 package shaderblox.uniforms;
 
-import gluon.webgl.GLUniformLocation;
+import webgl.GLUniformLocation;
 
 /**
  * All Uniforms are IAppliable.

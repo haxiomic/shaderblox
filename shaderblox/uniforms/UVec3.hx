@@ -1,7 +1,7 @@
 package shaderblox.uniforms;
 
-import gluon.webgl.GLContext;
-import gluon.webgl.GLUniformLocation;
+import webgl.GLContext;
+import webgl.GLUniformLocation;
 import typedarray.Float32Array;
 
 /**

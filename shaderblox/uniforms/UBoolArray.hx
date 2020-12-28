@@ -1,8 +1,8 @@
 package shaderblox.uniforms;
 
 import typedarray.Int32Array;
-import gluon.webgl.GLContext;
-import gluon.webgl.GLUniformLocation;
+import webgl.GLContext;
+import webgl.GLUniformLocation;
 
 /**
  * Bool uniform
