@@ -130,7 +130,7 @@ class ShaderBase
 			if (loc == null) {
 				loc = uniformLocations.get(u.name + '[0]');
 			}
-			if (Std.is(u, UTexture)) {
+			if (Std.isOfType(u, UTexture)) {
 				var t:UTexture = cast u;
 				t.samplerIndex = _numTextures++;
 				_textures[t.samplerIndex] = t;

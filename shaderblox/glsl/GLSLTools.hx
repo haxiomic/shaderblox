@@ -42,7 +42,7 @@ class GLSLTools {
 
             //concatenate just the root scope of the raw name string
             var rootScopeStr = exploded.contents.fold(function (n, rs)
-                return rs + (Std.is(n, StringNode) ? n.toString() : "")
+                return rs + (Std.isOfType(n, StringNode) ? n.toString() : "")
             , "");
 
             //try to locate const with supplied name
@@ -92,7 +92,7 @@ class GLSLTools {
         for (i in 0 ... scope.contents.length) {
             var n = scope.contents[i];
             var len = n.toString().length;
-            if(Std.is(n, StringNode)){
+            if(Std.isOfType(n, StringNode)){
                 if(stringTotal+len > CC){
                     targetIndex = i;
                     break;
@@ -236,7 +236,7 @@ class GLSLTools {
                 currentScope = scopeStack.pop();                
                 currentNode = currentScope;
             }else{
-                if(!Std.is(currentNode, StringNode)){
+                if(!Std.isOfType(currentNode, StringNode)){
                     currentNode = new StringNode();
                     currentScope.push(currentNode);
                 }
